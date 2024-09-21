@@ -3,17 +3,13 @@ import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import images from "../../constants/images";
 import FormField from "../../components/formField";
-import { SignInFormType } from "../../components/types";
 import CustomButton from "../../components/customButton";
 import { routeConstant } from "../../constants/appConstant";
-import { Link, router } from "expo-router";
+import { Link } from "expo-router";
+import { useSignUp } from "../../hooks/useUserContext";
 const SignIn = () => {
-  const [form, setForm] = useState<SignInFormType>({
-    email: "",
-    password: "",
-  });
+  const { signInform, setSignInForm, userSignIn, isSubmitting } = useSignUp();
 
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   return (
     <SafeAreaView className="bg-primary h-full">
       <ScrollView contentContainerStyle={{ height: "100%" }}>
@@ -27,23 +23,27 @@ const SignIn = () => {
             Log in to <Text className="text-secondary-200">Aora</Text>
           </Text>
           <FormField
-            handleTextChange={(e) => setForm({ ...form, email: e })}
+            handleTextChange={(e) => setSignInForm({ ...signInform, email: e })}
             keyboardType="email-address"
             styles="mt-7"
             title="Email"
             placeholder="Enter your email"
-            value={form.email}
+            value={signInform.email}
           />
           <FormField
-            handleTextChange={(e) => setForm({ ...form, password: e })}
+            handleTextChange={(e) =>
+              setSignInForm({ ...signInform, password: e })
+            }
             keyboardType="password"
             styles="mt-7"
             title="Password"
             placeholder="Enter your password"
-            value={form.password}
+            value={signInform.password}
           />
           <CustomButton
-            handlePress={() => router.push(routeConstant.HOME)}
+            handlePress={() => {
+              userSignIn();
+            }}
             isLoading={isSubmitting}
             title="Sign In"
             containerStyle="w-full mt-7"

@@ -1,21 +1,14 @@
 import { View, Text, Image, ScrollView } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import images from "../../constants/images";
 import FormField from "../../components/formField";
-import { SignUpFormType } from "../../components/types";
 import CustomButton from "../../components/customButton";
 import { routeConstant } from "../../constants/appConstant";
-import { Link, router } from "expo-router";
-import { createUser } from "../../services/createUser";
+import { Link } from "expo-router";
+import { useSignUp } from "../../hooks/useUserContext";
 const SignUp = () => {
-  const [form, setForm] = useState<SignUpFormType>({
-    username: "",
-    email: "",
-    password: "",
-  });
-
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const { signUpform, setSignUpForm, userSignUp, isSubmitting } = useSignUp();
   return (
     <SafeAreaView className="bg-primary h-full">
       <ScrollView contentContainerStyle={{ height: "100%" }}>
@@ -29,31 +22,37 @@ const SignUp = () => {
             Sign up to <Text className="text-secondary-200">Aora</Text>
           </Text>
           <FormField
-            handleTextChange={(e) => setForm({ ...form, username: e })}
+            handleTextChange={(e) =>
+              setSignUpForm({ ...signUpform, username: e })
+            }
             keyboardType="text"
             styles="mt-7"
             title="Username"
             placeholder="Enter your name"
-            value={form.username}
+            value={signUpform.username}
           />
           <FormField
-            handleTextChange={(e) => setForm({ ...form, email: e })}
+            handleTextChange={(e) => setSignUpForm({ ...signUpform, email: e })}
             keyboardType="email-address"
             styles="mt-7"
             title="Email"
             placeholder="Enter your email"
-            value={form.email}
+            value={signUpform.email}
           />
           <FormField
-            handleTextChange={(e) => setForm({ ...form, password: e })}
+            handleTextChange={(e) =>
+              setSignUpForm({ ...signUpform, password: e })
+            }
             keyboardType="password"
             styles="mt-7"
             title="Password"
             placeholder="Enter your password"
-            value={form.password}
+            value={signUpform.password}
           />
           <CustomButton
-            handlePress={() => router.push(routeConstant.HOME)}
+            handlePress={() => {
+              userSignUp();
+            }}
             isLoading={isSubmitting}
             title="Sign Up"
             containerStyle="w-full mt-7"
