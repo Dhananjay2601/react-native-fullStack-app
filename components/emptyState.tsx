@@ -1,0 +1,34 @@
+import { router } from "expo-router";
+import { View, Text, Image } from "react-native";
+
+import { images } from "../constants";
+import CustomButton from "./customButton";
+import { routeConstant } from "../constants/appConstant";
+
+const EmptyState = ({ title, subtitle }) => {
+  return (
+    <View className=" flex justify-center items-center px-4  ">
+      <Image
+        source={images.empty}
+        resizeMode="contain"
+        className="w-[270px] h-[216px]"
+      />
+
+      <Text className="text-xl text-center font-psemibold text-white ">
+        {title}
+      </Text>
+      <Text className="text-sm font-pmedium text-gray-100 mt-2">
+        {subtitle}
+      </Text>
+
+      <CustomButton
+        isLoading={false}
+        title="Create video"
+        handlePress={() => router.push(routeConstant.HOME)}
+        containerStyle="w-full my-5"
+      />
+    </View>
+  );
+};
+
+export default EmptyState;

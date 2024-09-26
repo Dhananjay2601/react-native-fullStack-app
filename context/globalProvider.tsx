@@ -1,13 +1,30 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  Dispatch,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { getCurrentUser } from "../services/getCurrentUser";
 
-const IntialState = {
-  isLoggedIn: false,
-  user: null,
-  isLoading: true,
+type IntialStateType = {
+  isLoggedIn: boolean;
+  user: any;
+  isLoading: boolean;
+  setIsLoggedIn: Dispatch<React.SetStateAction<boolean>>;
+  setUser: Dispatch<React.SetStateAction<any>>;
 };
 
-const GlobalContext = createContext(IntialState);
+const InitialState = {
+  isLoggedIn: false,
+  user: {},
+  isLoading: false,
+  setIsLoggedIn: () => {},
+  setUser: () => {},
+};
+
+const GlobalContext = createContext<IntialStateType>(InitialState);
+
 export const useGlobalContext = () => useContext(GlobalContext);
 
 const GlobalProvider = ({ children }) => {
@@ -40,8 +57,8 @@ const GlobalProvider = ({ children }) => {
         isLoggedIn,
         user,
         isLoading,
-        // setIsLoading,
-        // setUser,
+        setIsLoggedIn,
+        setUser,
       }}
     >
       {children}
